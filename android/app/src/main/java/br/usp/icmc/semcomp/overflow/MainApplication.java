@@ -1,4 +1,4 @@
-package br.usp.icmc.semcomp.attendance;
+package br.usp.icmc.semcomp.overflow;
 
 import android.app.Application;
 

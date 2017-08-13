@@ -1,4 +1,4 @@
-# semcomp-attendance-app
+# semcomp-overflow-app
 
 ## Como rodar
 

@@ -12,42 +12,37 @@ import Camera from 'react-native-camera';
 
 const inject_js = `
 document.addEventListener("message", function(event) {
-  var scope = angular.element(document.querySelector("body > main > div > div.ng-scope")).scope();
-  scope.insideApp = true;
+  var scope = angular.element(document.querySelector("[ng-app]")).scope();
   scope.code = event.data;
   scope.$digest();
-  scope.register();
+  scope.fakeSubmit();
 }, false);
 
 $( document ).ready(function() {
   try {
-    var scope = angular.element(document.querySelector("body > main > div > div.ng-scope")).scope();
+    var scope = angular.element(document.querySelector("[ng-app]")).scope();
     scope.insideApp = true;
     scope.$digest();
   } catch(e) {}
 });
 `;
 
-export default class attendance extends Component {
+export default class overflow extends Component {
   constructor( props ) {
     super( props );
     this.wvsemcomp = null;
     this.camera = null;
     this.state = {
-      count: 0,
       last_read_ts: 0,
-      last_read_code: "",
     };
 
     this.onRead = e => {
       let now = new Date().getTime();
       let state = this.state;
       let diff_ts = now - state.last_read_ts;
-      if (e.data !== state.last_read_code && diff_ts > 500 || diff_ts > 3000) {
-        state.last_read_code = e.data;
+      if (diff_ts > 300) {
         state.last_read_ts = now;
-        this.wvsemcomp.postMessage(state.last_read_code);
-        state.count += 1;
+        this.wvsemcomp.postMessage(e.data);
         Vibration.vibrate(70);
         this.setState(state);
       }
@@ -60,23 +55,22 @@ export default class attendance extends Component {
         <View style={[styles.center, styles.flex1]}>
           <Camera
             ref={ cam => this.camera = cam }
+            type={ 'front' }
             style={[styles.flex1, styles.center, styles.stretch]}
             aspect={Camera.constants.Aspect.stretch}
             onBarCodeRead={this.onRead}
             barCodeTypes={['code39', 'code93', 'interleaved2of5']}
           >
-            <Text style={[styles.flex1]}> </Text>
             <View style={[styles.row, styles.px1_5]}>
               <View style={[styles.flex1]}/>
               <View style={[styles.laser_bars, styles.flex10]}/>
               <View style={[styles.flex1]}/>
             </View>
-            <Text style={[styles.flex1, styles.counter]}>{count}</Text>
           </Camera>
         </View>
         <View style={[styles.flex4]}>
           <WebView
-            source={{uri: 'https://semcomp.icmc.usp.br/20/administracao/presenca/'}}
+            source={{uri: 'https://semcomp.icmc.usp.br/20/administracao/concursos/overflow/selecao/'}}
             ref={wvsemcomp => this.wvsemcomp = wvsemcomp}
             injectedJavaScript={inject_js}
           />
@@ -133,4 +127,4 @@ const styles = StyleSheet.create({
   }
 });
 
-AppRegistry.registerComponent('attendance', () => attendance);
+AppRegistry.registerComponent('overflow', () => overflow);

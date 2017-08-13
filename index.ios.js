@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-export default class attendance extends Component {
+export default class overflow extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('attendance', () => attendance);
+AppRegistry.registerComponent('overflow', () => overflow);

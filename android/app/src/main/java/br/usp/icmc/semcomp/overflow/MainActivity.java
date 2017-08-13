@@ -1,4 +1,4 @@
-package br.usp.icmc.semcomp.attendance;
+package br.usp.icmc.semcomp.overflow;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "attendance";
+        return "overflow";
     }
 }
